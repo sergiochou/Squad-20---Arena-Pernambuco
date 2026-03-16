@@ -21,9 +21,6 @@ Documento contendo as histórias de usuário no formato **Cartão, Conversa e Co
 🔗 **Visualizar documento (Google Docs)**  
 https://docs.google.com/document/d/1Ip4to0OEqmnKjZvN2xUTTQf7qFtkw_aETBb_hnfstgM/edit?usp=sharing
 
-⬇️ **Download em PDF**  
-[Baixar PDF das Histórias de Usuário](Historias%20de%20usuario%20squad%2020.pdf)
-
 ---
 
 ## 🎨 Protótipo Lo-Fi
