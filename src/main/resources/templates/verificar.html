@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Verificar evento — Arena Pernambuco</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+<main>
+  <h1 class="page-title">Verificação de evento</h1>
+  <p style="color: var(--texto-suave); margin-top: 0;">Informe o código oficial divulgado pelo organizador para confirmar se o evento está registrado neste sistema.</p>
+  <section class="card">
+    <form class="form-verificar" th:action="@{/verificar}" method="post">
+      <label for="codigo">Código de verificação</label>
+      <input type="text" id="codigo" name="codigo" autocomplete="off" placeholder="Ex.: AP-2026-FUT-SEM1" th:value="${codigoInformado}"/>
+      <p class="hint">O código não diferencia maiúsculas e minúsculas.</p>
+      <p style="margin-top: 1rem;">
+        <button type="submit" class="btn btn--primary">Verificar</button>
+      </p>
+    </form>
+
+    <div th:if="${ok == true}" class="resultado resultado--ok">
+      <h3>Evento verificado</h3>
+      <p>O código corresponde a um evento cadastrado.</p>
+      <dl th:if="${evento != null}">
+        <dt>Título</dt>
+        <dd th:text="${evento.titulo}">—</dd>
+        <dt>Data e hora</dt>
+        <dd th:text="${#temporals.format(evento.dataHora, 'dd/MM/yyyy HH:mm')}">—</dd>
+        <dt>Categoria</dt>
+        <dd th:text="${evento.categoria}">—</dd>
+        <dt>Observação</dt>
+        <dd th:text="${evento.descricaoCurta}">—</dd>
+      </dl>
+    </div>
+
+    <div th:if="${ok == false}" class="resultado resultado--erro">
+      <h3>Código não encontrado</h3>
+      <p>Nenhum evento corresponde ao código informado. Confira se digitou corretamente ou entre em contato com a organização.</p>
+      <p th:if="${codigoInformado != null && !codigoInformado.isEmpty()}">
+        <small>Código informado: <strong th:text="${codigoInformado}"></strong></small>
+      </p>
+    </div>
+  </section>
+</main>
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

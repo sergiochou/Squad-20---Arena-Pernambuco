@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Eventos — Arena Pernambuco</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+<main>
+  <h1 class="page-title">Eventos programados</h1>
+
+  <div style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem;">
+    <a href="/eventos" class="btn" th:classappend="${categoriaAtiva == null} ? 'btn--primary' : 'btn--ghost'">Todos</a>
+    <a href="/eventos?categoria=Futebol" class="btn" th:classappend="${categoriaAtiva == 'Futebol'} ? 'btn--primary' : 'btn--ghost'">Futebol</a>
+    <a href="/eventos?categoria=Música" class="btn" th:classappend="${categoriaAtiva == 'Música'} ? 'btn--primary' : 'btn--ghost'">Música</a>
+  </div>
+
+  <section class="card">
+    <table class="eventos" th:if="${not #lists.isEmpty(eventos)}">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Evento</th>
+          <th>Categoria</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="e : ${eventos}">
+          <td th:text="${#temporals.format(e.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+          <td th:text="${e.titulo}"></td>
+          <td th:text="${e.categoria}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div th:if="${#lists.isEmpty(eventos)}" style="padding: 2rem; text-align: center; color: var(--texto-suave);">
+      <p>Não há eventos programados no momento.</p>
+    </div>
+  </section>
+</main>
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
