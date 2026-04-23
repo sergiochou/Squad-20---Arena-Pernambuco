@@ -6,3 +6,14 @@ target/
 .project
 .settings/
 .vscode/
+
+# Firebase
+*-credentials.json
+firebase-adminsdk*.json
+*adminsdk*.json
+serviceAccountKey.json
+
+# Environment
+*.env
+.env.*
+application-local.properties
