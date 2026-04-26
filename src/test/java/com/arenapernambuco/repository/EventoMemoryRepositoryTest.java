@@ -133,4 +133,59 @@ class EventoMemoryRepositoryTest {
     void remover_comIdInexistente_lancaEventoNaoEncontradoException() {
         assertThrows(EventoNaoEncontradoException.class, () -> repository.remover("999"));
     }
+
+    @Test
+    void salvar_adicionaEventoRecuperavelPorId() {
+        Evento novo = new Evento("99", "Novo Evento",
+                LocalDateTime.of(2026, 6, 1, 19, 0),
+                "Cultural", "COD-99", "Resumo", "Completa", "", true);
+
+        repository.salvar(novo);
+
+        Optional<Evento> recuperado = repository.buscarPorId("99");
+        assertTrue(recuperado.isPresent());
+        assertEquals("Novo Evento", recuperado.get().titulo());
+    }
+
+    @Test
+    void salvar_comIdDuplicado_lancaIllegalArgumentException() {
+        Evento duplicado = new Evento("1", "Duplicado",
+                LocalDateTime.of(2026, 6, 1, 19, 0),
+                "Cultural", "COD-DUP", "Resumo", "Completa", "", true);
+
+        assertThrows(IllegalArgumentException.class, () -> repository.salvar(duplicado));
+    }
+
+    @Test
+    void atualizar_alteraEventoExistente() {
+        Evento atualizado = new Evento("1", "Título Atualizado",
+                LocalDateTime.of(2026, 5, 10, 16, 0),
+                "Futebol", "AP-FUT-001", "Nova descrição", "Nova completa", "", true);
+
+        Evento resultado = repository.atualizar("1", atualizado);
+
+        assertEquals("Título Atualizado", resultado.titulo());
+        assertEquals("Título Atualizado", repository.buscarPorId("1").get().titulo());
+    }
+
+    @Test
+    void atualizar_comIdInexistente_lancaEventoNaoEncontradoException() {
+        Evento evento = new Evento("999", "Qualquer",
+                LocalDateTime.of(2026, 6, 1, 19, 0),
+                "Cultural", "COD-999", "", "", "", true);
+
+        assertThrows(EventoNaoEncontradoException.class, () -> repository.atualizar("999", evento));
+    }
+
+    @Test
+    void remover_removeEventoExistente() {
+        repository.remover("1");
+
+        assertTrue(repository.buscarPorId("1").isEmpty());
+    }
+
+    @Test
+    void remover_comIdInexistente_lancaEventoNaoEncontradoException() {
+        assertThrows(EventoNaoEncontradoException.class, () -> repository.remover("999"));
+    }
 }

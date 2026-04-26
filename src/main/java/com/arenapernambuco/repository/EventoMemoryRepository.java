@@ -143,4 +143,34 @@ public class EventoMemoryRepository implements EventoRepository {
             throw new EventoNaoEncontradoException(id);
         }
     }
+
+    @Override
+    public Evento salvar(Evento evento) {
+        if (buscarPorId(evento.id()).isPresent()) {
+            throw new IllegalArgumentException("Evento com id '" + evento.id() + "' já existe");
+        }
+        eventos.add(evento);
+        return evento;
+    }
+
+    @Override
+    public Evento atualizar(String id, Evento evento) {
+        synchronized (eventos) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (eventos.get(i).id().equals(id)) {
+                    eventos.set(i, evento);
+                    return evento;
+                }
+            }
+        }
+        throw new EventoNaoEncontradoException(id);
+    }
+
+    @Override
+    public void remover(String id) {
+        boolean removido = eventos.removeIf(e -> e.id().equals(id));
+        if (!removido) {
+            throw new EventoNaoEncontradoException(id);
+        }
+    }
 }
